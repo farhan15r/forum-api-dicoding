@@ -1,0 +1,14 @@
+table users:
+	-id
+	-username
+	-fullname
+
+table authentications:
+	-refreshtoken
+
+table threads:
+	-id
+	-title
+	-body
+	-owner
+	
