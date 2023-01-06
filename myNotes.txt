@@ -12,4 +12,11 @@ table threads:
 	-body
 	-date
 	-owner
-	
+
+table comments:
+	-id
+	-content
+	-thread_id
+	-owner
+	-date
+	-is_delete

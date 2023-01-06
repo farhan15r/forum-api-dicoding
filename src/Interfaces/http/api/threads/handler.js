@@ -1,4 +1,4 @@
-const AddThreadHandler = require('../../../../Applications/use_case/AddThreadUseCase');
+const AddThreadUseCase = require('../../../../Applications/use_case/AddThreadUseCase');
 
 class ThreadsHandler {
   constructor(container) {
@@ -8,7 +8,7 @@ class ThreadsHandler {
   }
 
   async postThreadHandler(request, h) {
-    const addThreadUseCase = this._container.getInstance(AddThreadHandler.name);
+    const addThreadUseCase = this._container.getInstance(AddThreadUseCase.name);
     const owner = request.auth.credentials.id;
     const addedThread = await addThreadUseCase.execute({
       ...request.payload,
