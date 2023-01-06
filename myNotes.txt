@@ -10,5 +10,6 @@ table threads:
 	-id
 	-title
 	-body
+	-date
 	-owner
 	

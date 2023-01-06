@@ -3,5 +3,3 @@ package-lock.json
 .idea
 config/database/test.json
 coverage
-
-src/Domains/threads
