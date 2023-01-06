@@ -26,7 +26,7 @@ describe('AddCommentUseCase', () => {
     mockCommentRepository.addComment = jest
       .fn()
       .mockImplementation(() => Promise.resolve(expectedAddedComment));
-    mockThreadRepository.verifyAvailableThread = jest
+    mockThreadRepository.checkAvailabilityThread = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
 

@@ -78,14 +78,14 @@ describe('ThreadRepositoryPostgres', () => {
     });
   });
 
-  describe('verifyAvailableThread function', () => {
+  describe('checkAvailabilityThread function', () => {
     it('should throw error when thread not available', async () => {
       // Arrange
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // Action and Assert
       await expect(
-        threadRepositoryPostgres.verifyAvailableThread('thread-123')
+        threadRepositoryPostgres.checkAvailabilityThread('thread-123')
       ).rejects.toThrowError('thread tidak ditemukan');
     });
 
@@ -109,7 +109,7 @@ describe('ThreadRepositoryPostgres', () => {
 
       // Action and Assert
       await expect(
-        threadRepositoryPostgres.verifyAvailableThread('thread-123')
+        threadRepositoryPostgres.checkAvailabilityThread('thread-123')
       ).resolves.not.toThrowError();
     });
   });
