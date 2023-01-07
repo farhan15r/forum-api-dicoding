@@ -20,3 +20,11 @@ table comments:
 	-owner
 	-date
 	-is_delete
+
+table replies:
+	-id
+	-content
+	-comment_id
+	-owner
+	-date
+	-is_delete

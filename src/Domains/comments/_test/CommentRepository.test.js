@@ -10,7 +10,7 @@ describe('a CommentRepository entities', () => {
       'COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED'
     );
     await expect(
-      commentRepository.checkAvailableComment({})
+      commentRepository.checkAvailabilityComment({})
     ).rejects.toThrowError('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED');
     await expect(commentRepository.verifyCommentOwner({})).rejects.toThrowError(
       'COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED'

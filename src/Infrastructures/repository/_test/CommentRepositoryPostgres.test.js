@@ -101,14 +101,14 @@ describe('CommentRepositoryPostgres', () => {
     });
   });
 
-  describe('checkAvailableComment function', () => {
+  describe('checkAvailabilityComment function', () => {
     it('should throw error when comment not available', async () => {
       // Arrange
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert
       await expect(
-        commentRepositoryPostgres.checkAvailableComment('comment-123')
+        commentRepositoryPostgres.checkAvailabilityComment('comment-123')
       ).rejects.toThrowError('komentar tidak ditemukan');
     });
 
@@ -140,7 +140,7 @@ describe('CommentRepositoryPostgres', () => {
 
       // Action & Assert
       await expect(
-        commentRepositoryPostgres.checkAvailableComment('comment-123')
+        commentRepositoryPostgres.checkAvailabilityComment('comment-123')
       ).resolves.not.toThrowError();
 
       // Assert
