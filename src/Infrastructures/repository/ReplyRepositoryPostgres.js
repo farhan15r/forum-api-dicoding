@@ -64,6 +64,26 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     await this._pool.query(query);
   }
+
+  async getRepliesByCommentId(commentId) {
+    const query = {
+      text: `SELECT
+        replies.id, users.username, replies.date,
+        CASE
+          WHEN replies.is_delete = true THEN '**balasan telah dihapus**'
+          ELSE replies.content
+        END AS content
+        FROM replies
+        LEFT JOIN users ON users.id = replies.owner
+        WHERE replies.comment_id = $1
+        ORDER BY replies.date ASC`,
+      values: [commentId],
+    };
+
+    const result = await this._pool.query(query);
+
+    return result.rows;
+  }
 }
 
 module.exports = ReplyRepositoryPostgres;

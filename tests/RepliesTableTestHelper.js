@@ -28,6 +28,15 @@ const RepliesTableTestHelper = {
     return result.rows;
   },
 
+  async deleteReplyById(id) {
+    const query = {
+      text: 'UPDATE replies SET is_delete = true WHERE id = $1',
+      values: [id],
+    };
+
+    await pool.query(query);
+  },
+
   async cleanTable() {
     await pool.query('DELETE FROM replies WHERE 1=1');
   },

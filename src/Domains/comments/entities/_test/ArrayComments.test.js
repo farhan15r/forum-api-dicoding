@@ -37,6 +37,7 @@ describe('a ArrayComments entities', () => {
         content: 'ini komentar',
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
+        replies: [],
       },
     ];
 
@@ -54,6 +55,7 @@ describe('a ArrayComments entities', () => {
         content: 'ini komentar',
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
+        replies: [],
       },
     ];
 

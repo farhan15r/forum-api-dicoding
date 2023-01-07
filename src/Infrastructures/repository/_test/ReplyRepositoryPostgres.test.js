@@ -297,4 +297,62 @@ describe('ReplyRepositoryPostgres', () => {
       expect(replies[0].is_delete).toEqual(true);
     });
   });
+
+  describe('getRepliesByCommentId function', () => {
+    it('should return replies correctly', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'dicoding',
+        password: 'secret_password',
+        fullname: 'Dicoding Indonesia',
+      });
+
+      await ThreadTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'sebuah thread',
+        body: 'sebuah body',
+        date: new Date().toISOString(),
+        owner: 'user-123',
+      });
+
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        threadId: 'thread-123',
+        date: new Date('2021-01-01').toISOString(),
+        owner: 'user-123',
+      });
+
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123',
+        content: 'sebuah reply',
+        commentId: 'comment-123',
+        date: new Date('2021-01-01').toISOString(),
+        owner: 'user-123',
+      });
+
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-456',
+        content: 'sebuah reply',
+        commentId: 'comment-123',
+        date: new Date('2022-01-02').toISOString(),
+        owner: 'user-123',
+      });
+
+      await RepliesTableTestHelper.deleteReplyById('reply-456');
+
+      const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
+
+      // Action
+      const replies = await replyRepositoryPostgres.getRepliesByCommentId(
+        'comment-123'
+      );
+
+      // Assert
+      expect(replies).toHaveLength(2);
+      expect(replies[0].content).toEqual('sebuah reply');
+      expect(replies[1].content).toEqual('**balasan telah dihapus**');
+    });
+  });
 });
