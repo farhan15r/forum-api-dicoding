@@ -254,4 +254,54 @@ describe('CommentRepositoryPostgres', () => {
       expect(comments[0].is_delete).toEqual(true);
     });
   });
+
+  describe('getCommentsByThreadId function', () => {
+    it('should persist get comment by thread id', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'dicoding',
+        password: 'secret_password',
+        fullname: 'Dicoding Indonesia',
+      });
+
+      await ThreadTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'sebuah thread',
+        body: 'sebuah body',
+        date: new Date().toISOString(),
+        owner: 'user-123',
+      });
+
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        content: 'sebuah comment',
+        threadId: 'thread-123',
+        date: new Date('2021-01-01').toISOString(),
+        owner: 'user-123',
+      });
+
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-456',
+        content: 'sebuah comment',
+        threadId: 'thread-123',
+        date: new Date('2022-01-02').toISOString(),
+        owner: 'user-123',
+      });
+
+      await CommentsTableTestHelper.deleteCommentById('comment-456');
+
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action
+      const comments = await commentRepositoryPostgres.getCommentsByThreadId(
+        'thread-123'
+      );
+
+      // Assert
+      expect(comments).toHaveLength(2);
+      expect(comments[0].content).toEqual('sebuah comment');
+      expect(comments[1].content).toEqual('**komentar telah dihapus**');
+    });
+  });
 });

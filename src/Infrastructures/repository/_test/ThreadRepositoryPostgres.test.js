@@ -113,4 +113,38 @@ describe('ThreadRepositoryPostgres', () => {
       ).resolves.not.toThrowError();
     });
   });
+
+  describe('getThreadById funtion', () => {
+    it('should persist add thread and return added thread correctly', async () => {
+      // Arrange
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'dicoding',
+        password: 'secret_password',
+        fullname: 'Dicoding Indonesia',
+      });
+
+      await ThreadTableTestHelper.addThread({
+        id: 'thread-123',
+        title: 'sebuah thread',
+        body: 'sebuah body',
+        date: '2021-08-08 07:07:07',
+        owner: 'user-123',
+      });
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      // Action
+      const thread = await threadRepositoryPostgres.getThreadById('thread-123');
+
+      // Assert
+      expect(thread).toStrictEqual({
+        id: 'thread-123',
+        title: 'sebuah thread',
+        body: 'sebuah body',
+        date: '2021-08-08 07:07:07',
+        username: 'dicoding',
+      });
+    });
+  });
 });
