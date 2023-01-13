@@ -5,6 +5,7 @@ const AddComment = require('../../../Domains/comments/entities/AddComment');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
 const pool = require('../../database/postgres/pool');
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
+const ArrayComments = require('../../../Domains/comments/entities/ArrayComments');
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
@@ -141,7 +142,7 @@ describe('CommentRepositoryPostgres', () => {
       // Action & Assert
       await expect(
         commentRepositoryPostgres.checkAvailabilityComment('comment-123')
-      ).resolves.not.toThrowError();
+      ).resolves.not.toThrowError('komentar tidak ditemukan');
 
       // Assert
       const comments = await CommentsTableTestHelper.findCommentsById(
@@ -213,7 +214,7 @@ describe('CommentRepositoryPostgres', () => {
       // Action & Assert
       await expect(
         commentRepositoryPostgres.verifyCommentOwner('comment-123', 'user-123')
-      ).resolves.not.toThrowError();
+      ).resolves.not.toThrowError('anda tidak berhak mengakses resource ini');
     });
   });
 
@@ -298,10 +299,26 @@ describe('CommentRepositoryPostgres', () => {
         'thread-123'
       );
 
+      comments[0].replies = [];
+      comments[1].replies = [];
+
+      const arrayComments = new ArrayComments(comments);
+
       // Assert
-      expect(comments).toHaveLength(2);
-      expect(comments[0].content).toEqual('sebuah comment');
-      expect(comments[1].content).toEqual('**komentar telah dihapus**');
+      expect(arrayComments.comments).toHaveLength(2);
+
+      const comment1 = arrayComments.comments[0];
+      const comment2 = arrayComments.comments[1];
+
+      expect(comment1.id).toEqual('comment-123');
+      expect(comment1.content).toEqual('sebuah comment');
+      expect(comment1.date).toEqual(new Date('2021-01-01').toISOString());
+      expect(comment1.username).toEqual('dicoding');
+
+      expect(comment2.id).toEqual('comment-456');
+      expect(comment2.content).toEqual('**komentar telah dihapus**');
+      expect(comment2.date).toEqual(new Date('2022-01-02').toISOString());
+      expect(comment2.username).toEqual('dicoding');
     });
   });
 });

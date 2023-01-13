@@ -37,6 +37,7 @@ describe('a ArrayComments entities', () => {
         content: 'ini komentar',
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
+        is_delete: false,
         replies: [],
       },
     ];
@@ -55,6 +56,32 @@ describe('a ArrayComments entities', () => {
         content: 'ini komentar',
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
+        is_delete: true,
+        replies: [],
+      },
+      {
+        id: 'comment-124',
+        content: 'ini komentar',
+        date: '2021-08-08T07:07:46.000Z',
+        username: 'dicoding',
+        is_delete: false,
+        replies: [],
+      },
+    ];
+
+    const expected = [
+      {
+        id: 'comment-123',
+        content: '**komentar telah dihapus**',
+        date: '2021-08-08T07:07:46.000Z',
+        username: 'dicoding',
+        replies: [],
+      },
+      {
+        id: 'comment-124',
+        content: 'ini komentar',
+        date: '2021-08-08T07:07:46.000Z',
+        username: 'dicoding',
         replies: [],
       },
     ];
@@ -64,6 +91,6 @@ describe('a ArrayComments entities', () => {
 
     // Assert
     expect(arrayComments).toBeInstanceOf(ArrayComments);
-    expect(arrayComments.comments).toEqual(payload);
+    expect(arrayComments.comments).toStrictEqual(expected);
   });
 });

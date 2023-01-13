@@ -6,7 +6,7 @@ const ThreadTableTestHelper = {
     id = 'thread-123',
     title = 'sebuah thread',
     body = 'sebuah body',
-    date = new Date().toISOString(),
+    date = '2020-01-12T16:36:10.653Z',
     owner = 'user-123',
   }) {
     const query = {

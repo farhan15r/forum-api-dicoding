@@ -26,19 +26,16 @@ describe('GetThreadUseCase', () => {
         content: 'Dicoding Indonesia',
         date: '2021-08-08T07:26:17.018Z',
         username: 'user-123',
+        replies: expectedArrayReplies,
       },
     ];
 
-    const expectedGetThread = {
+    const expectedGetThread = new GetThread({
       id: 'thread-123',
       title: 'Dicoding Indonesia',
       body: 'Dicoding Indonesia',
       date: '2021-08-08T07:26:17.018Z',
       username: 'user-123',
-    };
-
-    const expectedGetThreadWithComments = new GetThread({
-      ...expectedGetThread,
       comments: expectedArrayComments,
     });
 
@@ -53,13 +50,39 @@ describe('GetThreadUseCase', () => {
       .mockImplementation(() => Promise.resolve());
     mockCommentRepository.getCommentsByThreadId = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(expectedArrayComments));
+      .mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: 'comment-123',
+            content: 'Dicoding Indonesia',
+            date: '2021-08-08T07:26:17.018Z',
+            username: 'user-123',
+            is_delete: false,
+          },
+        ])
+      );
     mockReplyRepository.getRepliesByCommentId = jest
       .fn()
-      .mockImplementation(() => Promise.resolve(expectedArrayReplies));
-    mockThreadRepository.getThreadById = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(expectedGetThread));
+      .mockImplementation(() =>
+        Promise.resolve([
+          {
+            id: 'reply-123',
+            content: 'Dicoding Indonesia',
+            date: '2021-08-08T07:26:17.018Z',
+            username: 'user-123',
+            is_delete: false,
+          },
+        ])
+      );
+    mockThreadRepository.getThreadById = jest.fn().mockImplementation(() =>
+      Promise.resolve({
+        id: 'thread-123',
+        title: 'Dicoding Indonesia',
+        body: 'Dicoding Indonesia',
+        date: '2021-08-08T07:26:17.018Z',
+        username: 'user-123',
+      })
+    );
 
     // creating use case instance
     const getThreadUseCase = new GetThreadUseCase({
@@ -72,12 +95,15 @@ describe('GetThreadUseCase', () => {
     const getThread = await getThreadUseCase.execute(useCasePayload);
 
     // Assert
-    expect(getThread).toStrictEqual(expectedGetThreadWithComments);
+    expect(getThread).toStrictEqual(expectedGetThread);
     expect(mockThreadRepository.checkAvailabilityThread).toBeCalledWith(
       useCasePayload.threadId
     );
     expect(mockCommentRepository.getCommentsByThreadId).toBeCalledWith(
       useCasePayload.threadId
+    );
+    expect(mockReplyRepository.getRepliesByCommentId).toBeCalledWith(
+      'comment-123'
     );
     expect(mockThreadRepository.getThreadById).toBeCalledWith(
       useCasePayload.threadId

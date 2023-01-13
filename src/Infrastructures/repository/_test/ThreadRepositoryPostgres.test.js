@@ -110,7 +110,7 @@ describe('ThreadRepositoryPostgres', () => {
       // Action and Assert
       await expect(
         threadRepositoryPostgres.checkAvailabilityThread('thread-123')
-      ).resolves.not.toThrowError();
+      ).resolves.not.toThrowError('thread tidak ditemukan');
     });
   });
 

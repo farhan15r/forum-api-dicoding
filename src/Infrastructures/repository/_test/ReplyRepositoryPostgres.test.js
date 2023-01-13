@@ -6,6 +6,7 @@ const AddedReply = require('../../../Domains/replies/entities/AddedReply');
 const AddReply = require('../../../Domains/replies/entities/AddReply');
 const pool = require('../../database/postgres/pool');
 const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
+const ArrayReplies = require('../../../Domains/replies/entities/ArrayReplies');
 
 describe('ReplyRepositoryPostgres', () => {
   afterEach(async () => {
@@ -249,7 +250,7 @@ describe('ReplyRepositoryPostgres', () => {
       // Action & Assert
       await expect(
         replyRepositoryPostgres.verifyReplyOwner('reply-123', 'user-123')
-      ).resolves.not.toThrowError();
+      ).resolves.not.toThrowError('anda tidak berhak mengakses resource ini');
     });
   });
 
@@ -349,10 +350,23 @@ describe('ReplyRepositoryPostgres', () => {
         'comment-123'
       );
 
+      const arrayReplies = new ArrayReplies(replies);
+
       // Assert
-      expect(replies).toHaveLength(2);
-      expect(replies[0].content).toEqual('sebuah reply');
-      expect(replies[1].content).toEqual('**balasan telah dihapus**');
+      expect(arrayReplies.replies).toHaveLength(2);
+
+      const reply1 = arrayReplies.replies[0];
+      const reply2 = arrayReplies.replies[1];
+
+      expect(reply1.id).toEqual('reply-123');
+      expect(reply1.content).toEqual('sebuah reply');
+      expect(reply1.date).toEqual(new Date('2021-01-01').toISOString());
+      expect(reply1.username).toEqual('dicoding');
+
+      expect(reply2.id).toEqual('reply-456');
+      expect(reply2.content).toEqual('**balasan telah dihapus**');
+      expect(reply2.date).toEqual(new Date('2022-01-02').toISOString());
+      expect(reply2.username).toEqual('dicoding');
     });
   });
 });

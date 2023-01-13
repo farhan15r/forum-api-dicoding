@@ -42,7 +42,7 @@ describe('a AddReply entities', () => {
     // Assert
     expect(addReply).toBeInstanceOf(AddReply);
     expect(addReply.content).toEqual(payload.content);
-    expect(addReply.threadId).toEqual(payload.threadId);
+    expect(addReply.commentId).toEqual(payload.commentId);
     expect(addReply.owner).toEqual(payload.owner);
   });
 });

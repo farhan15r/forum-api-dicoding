@@ -37,6 +37,7 @@ describe('a ArrayReplies entities', () => {
         content: 'ini balasan',
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
+        is_delete: false,
       },
     ];
 
@@ -54,6 +55,29 @@ describe('a ArrayReplies entities', () => {
         content: 'ini balasan',
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
+        is_delete: false,
+      },
+      {
+        id: 'reply-124',
+        content: 'ini balasan',
+        date: '2021-08-08T07:07:46.000Z',
+        username: 'dicoding',
+        is_delete: true,
+      },
+    ];
+
+    const expected = [
+      {
+        id: 'reply-123',
+        content: 'ini balasan',
+        date: '2021-08-08T07:07:46.000Z',
+        username: 'dicoding',
+      },
+      {
+        id: 'reply-124',
+        content: '**balasan telah dihapus**',
+        date: '2021-08-08T07:07:46.000Z',
+        username: 'dicoding',
       },
     ];
 
@@ -61,6 +85,6 @@ describe('a ArrayReplies entities', () => {
     const arrayReplies = new ArrayReplies(payload);
 
     // Assert
-    expect(arrayReplies.replies).toStrictEqual(payload);
+    expect(arrayReplies.replies).toStrictEqual(expected);
   });
 });

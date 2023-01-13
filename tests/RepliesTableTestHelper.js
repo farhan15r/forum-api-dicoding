@@ -6,7 +6,7 @@ const RepliesTableTestHelper = {
     id = 'reply-123',
     content = 'sebuah reply',
     commentId = 'comment-123',
-    date = new Date().toISOString(),
+    date = '2020-01-12T16:36:10.653Z',
     owner = 'user-123',
   }) {
     const query = {

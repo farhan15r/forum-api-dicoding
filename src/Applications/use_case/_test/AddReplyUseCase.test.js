@@ -25,9 +25,15 @@ describe('AddReplyUseCase', () => {
     const mockReplyRepository = new ReplyRepository();
 
     // mocking needed function
-    mockReplyRepository.addReply = jest
-      .fn()
-      .mockImplementation(() => Promise.resolve(expectedAddedReply));
+    mockReplyRepository.addReply = jest.fn().mockImplementation(() =>
+      Promise.resolve(
+        new AddedReply({
+          id: 'reply-123',
+          content: useCasePayload.content,
+          owner: useCasePayload.owner,
+        })
+      )
+    );
     mockThreadRepository.checkAvailabilityThread = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
@@ -47,6 +53,12 @@ describe('AddReplyUseCase', () => {
 
     // Assert
     expect(addedReply).toStrictEqual(expectedAddedReply);
+    expect(mockThreadRepository.checkAvailabilityThread).toBeCalledWith(
+      useCasePayload.threadId
+    );
+    expect(mockCommentRepository.checkAvailabilityComment).toBeCalledWith(
+      useCasePayload.commentId
+    );
     expect(mockReplyRepository.addReply).toBeCalledWith(
       new AddReply(useCasePayload)
     );
