@@ -8,6 +8,11 @@ const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
 const ArrayComments = require('../../../Domains/comments/entities/ArrayComments');
 
 describe('CommentRepositoryPostgres', () => {
+  beforeEach(async () => {
+    await UsersTableTestHelper.addUser({});
+    await ThreadTableTestHelper.addThread({});
+  });
+
   afterEach(async () => {
     await CommentsTableTestHelper.cleanTable();
     await ThreadTableTestHelper.cleanTable();
@@ -21,20 +26,6 @@ describe('CommentRepositoryPostgres', () => {
   describe('addComment function', () => {
     it('should persist add comment and return added comment correctly', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-      });
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        body: 'sebuah body',
-        date: new Date().toISOString(),
-        owner: 'user-123',
-      });
-
       const addComment = new AddComment({
         content: 'sebuah comment',
         threadId: 'thread-123',
@@ -59,20 +50,6 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should return added comment correctly', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-      });
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        body: 'sebuah body',
-        date: new Date().toISOString(),
-        owner: 'user-123',
-      });
-
       const addComment = new AddComment({
         content: 'sebuah comment',
         threadId: 'thread-123',
@@ -115,27 +92,7 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should not throw error when comment available', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-        fullname: 'Dicoding Indonesia',
-      });
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        body: 'sebuah body',
-        date: new Date().toISOString(),
-        owner: 'user-123',
-      });
-
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-        content: 'sebuah comment',
-        threadId: 'thread-123',
-        owner: 'user-123',
-      });
+      await CommentsTableTestHelper.addComment({});
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
@@ -155,27 +112,7 @@ describe('CommentRepositoryPostgres', () => {
   describe('verifyCommentOwner function', () => {
     it('should throw error when comment owner not match', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-        fullname: 'Dicoding Indonesia',
-      });
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        body: 'sebuah body',
-        date: new Date().toISOString(),
-        owner: 'user-123',
-      });
-
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-        content: 'sebuah comment',
-        threadId: 'thread-123',
-        owner: 'user-123',
-      });
+      await CommentsTableTestHelper.addComment({});
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
@@ -187,27 +124,7 @@ describe('CommentRepositoryPostgres', () => {
 
     it('should not throw error when comment owner match', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-        fullname: 'Dicoding Indonesia',
-      });
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        body: 'sebuah body',
-        date: new Date().toISOString(),
-        owner: 'user-123',
-      });
-
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-        content: 'sebuah comment',
-        threadId: 'thread-123',
-        owner: 'user-123',
-      });
+      await CommentsTableTestHelper.addComment({});
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
@@ -221,27 +138,7 @@ describe('CommentRepositoryPostgres', () => {
   describe('deleteComment function', () => {
     it('should persist deleted comment', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-        fullname: 'Dicoding Indonesia',
-      });
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        body: 'sebuah body',
-        date: new Date().toISOString(),
-        owner: 'user-123',
-      });
-
-      await CommentsTableTestHelper.addComment({
-        id: 'comment-123',
-        content: 'sebuah comment',
-        threadId: 'thread-123',
-        owner: 'user-123',
-      });
+      await CommentsTableTestHelper.addComment({});
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
@@ -259,35 +156,14 @@ describe('CommentRepositoryPostgres', () => {
   describe('getCommentsByThreadId function', () => {
     it('should persist get comment by thread id', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-        fullname: 'Dicoding Indonesia',
-      });
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        body: 'sebuah body',
-        date: new Date().toISOString(),
-        owner: 'user-123',
-      });
-
       await CommentsTableTestHelper.addComment({
         id: 'comment-123',
-        content: 'sebuah comment',
-        threadId: 'thread-123',
-        date: new Date('2021-01-01').toISOString(),
-        owner: 'user-123',
+        date: '2020-01-12T16:36:10.653Z',
       });
 
       await CommentsTableTestHelper.addComment({
         id: 'comment-456',
-        content: 'sebuah comment',
-        threadId: 'thread-123',
-        date: new Date('2022-01-02').toISOString(),
-        owner: 'user-123',
+        date: '2021-01-12T16:36:10.653Z',
       });
 
       await CommentsTableTestHelper.deleteCommentById('comment-456');
@@ -312,12 +188,12 @@ describe('CommentRepositoryPostgres', () => {
 
       expect(comment1.id).toEqual('comment-123');
       expect(comment1.content).toEqual('sebuah comment');
-      expect(comment1.date).toEqual(new Date('2021-01-01').toISOString());
+      expect(comment1.date).toEqual('2020-01-12T16:36:10.653Z');
       expect(comment1.username).toEqual('dicoding');
 
       expect(comment2.id).toEqual('comment-456');
       expect(comment2.content).toEqual('**komentar telah dihapus**');
-      expect(comment2.date).toEqual(new Date('2022-01-02').toISOString());
+      expect(comment2.date).toEqual('2021-01-12T16:36:10.653Z');
       expect(comment2.username).toEqual('dicoding');
     });
   });

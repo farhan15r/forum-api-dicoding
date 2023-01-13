@@ -6,6 +6,10 @@ const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 
 describe('ThreadRepositoryPostgres', () => {
+  beforeEach(async () => {
+    await UsersTableTestHelper.addUser({});
+  });
+
   afterEach(async () => {
     await ThreadTableTestHelper.cleanTable();
     await UsersTableTestHelper.cleanTable();
@@ -18,18 +22,12 @@ describe('ThreadRepositoryPostgres', () => {
   describe('addThread function', () => {
     it('should persist add thread and return added thread correctly', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-      });
-
       const addThread = new AddThread({
         title: 'sebuah thread',
         body: 'sebuah body',
         owner: 'user-123',
       });
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '12345'; // stub!
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
         fakeIdGenerator
@@ -39,25 +37,21 @@ describe('ThreadRepositoryPostgres', () => {
       await threadRepositoryPostgres.addThread(addThread);
 
       // Assert
-      const threads = await ThreadTableTestHelper.findThreadsById('thread-123');
+      const threads = await ThreadTableTestHelper.findThreadsById(
+        'thread-12345'
+      );
       expect(threads).toHaveLength(1);
     });
 
     it('should return added thread correctly', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-      });
-
       const addThread = new AddThread({
         title: 'sebuah thread',
         body: 'sebuah body',
         owner: 'user-123',
       });
 
-      const fakeIdGenerator = () => '123'; // stub!
+      const fakeIdGenerator = () => '12345'; // stub!
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(
         pool,
         fakeIdGenerator
@@ -69,7 +63,7 @@ describe('ThreadRepositoryPostgres', () => {
       // Assert
       expect(addedThread).toStrictEqual(
         new AddedThread({
-          id: 'thread-123',
+          id: 'thread-12345',
           title: addThread.title,
           body: addThread.body,
           owner: addThread.owner,
@@ -91,19 +85,7 @@ describe('ThreadRepositoryPostgres', () => {
 
     it('should not throw error when thread available', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-        fullname: 'Dicoding Indonesia',
-      });
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        body: 'sebuah body',
-        owner: 'user-123',
-      });
+      await ThreadTableTestHelper.addThread({});
 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
@@ -117,20 +99,7 @@ describe('ThreadRepositoryPostgres', () => {
   describe('getThreadById funtion', () => {
     it('should persist add thread and return added thread correctly', async () => {
       // Arrange
-      await UsersTableTestHelper.addUser({
-        id: 'user-123',
-        username: 'dicoding',
-        password: 'secret_password',
-        fullname: 'Dicoding Indonesia',
-      });
-
-      await ThreadTableTestHelper.addThread({
-        id: 'thread-123',
-        title: 'sebuah thread',
-        body: 'sebuah body',
-        date: '2021-08-08 07:07:07',
-        owner: 'user-123',
-      });
+      await ThreadTableTestHelper.addThread({});
 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
@@ -142,7 +111,7 @@ describe('ThreadRepositoryPostgres', () => {
         id: 'thread-123',
         title: 'sebuah thread',
         body: 'sebuah body',
-        date: '2021-08-08 07:07:07',
+        date: '2020-01-12T16:36:10.653Z',
         username: 'dicoding',
       });
     });
