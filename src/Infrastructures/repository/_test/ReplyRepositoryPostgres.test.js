@@ -6,7 +6,6 @@ const AddedReply = require('../../../Domains/replies/entities/AddedReply');
 const AddReply = require('../../../Domains/replies/entities/AddReply');
 const pool = require('../../database/postgres/pool');
 const ReplyRepositoryPostgres = require('../ReplyRepositoryPostgres');
-const ArrayReplies = require('../../../Domains/replies/entities/ArrayReplies');
 
 describe('ReplyRepositoryPostgres', () => {
   beforeEach(async () => {
@@ -170,24 +169,24 @@ describe('ReplyRepositoryPostgres', () => {
       const replies = await replyRepositoryPostgres.getRepliesByCommentId(
         'comment-123'
       );
-
-      const arrayReplies = new ArrayReplies(replies);
-
       // Assert
-      expect(arrayReplies.replies).toHaveLength(2);
 
-      const reply1 = arrayReplies.replies[0];
-      const reply2 = arrayReplies.replies[1];
-
-      expect(reply1.id).toEqual('reply-123');
-      expect(reply1.content).toEqual('sebuah reply');
-      expect(reply1.date).toEqual('2020-01-12T16:36:10.653Z');
-      expect(reply1.username).toEqual('dicoding');
-
-      expect(reply2.id).toEqual('reply-456');
-      expect(reply2.content).toEqual('**balasan telah dihapus**');
-      expect(reply2.date).toEqual('2021-01-12T16:36:10.653Z');
-      expect(reply2.username).toEqual('dicoding');
+      expect(replies).toStrictEqual([
+        {
+          id: 'reply-123',
+          content: 'sebuah reply',
+          date: '2020-01-12T16:36:10.653Z',
+          is_delete: false,
+          username: 'dicoding',
+        },
+        {
+          id: 'reply-456',
+          content: 'sebuah reply',
+          date: '2021-01-12T16:36:10.653Z',
+          is_delete: true,
+          username: 'dicoding',
+        },
+      ]);
     });
   });
 });

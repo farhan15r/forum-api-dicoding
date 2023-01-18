@@ -14,6 +14,26 @@ describe('a ArrayComments entities', () => {
     );
   });
 
+  it('should throw error when not given payload', () => {
+    // Action and Assert
+    expect(() => new ArrayComments()).toThrowError(
+      'ARRAY_COMMENTS.NOT_MEET_DATA_TYPE_SPECIFICATION'
+    );
+  });
+
+  it('should not throw error when payload is meet data type specification but not have length', () => {
+    // Arrange
+    const payload = [];
+
+    // Action and Assert
+    expect(() => new ArrayComments(payload)).not.toThrowError(
+      'ARRAY_COMMENTS.NOT_MEET_DATA_TYPE_SPECIFICATION'
+    );
+    expect(() => new ArrayComments(payload)).not.toThrowError(
+      'ARRAY_COMMENTS.NOT_CONTAIN_NEEDED_PROPERTY'
+    );
+  });
+
   it('should throw error when payload did not contain needed property', () => {
     // Arrange
     const payload = [

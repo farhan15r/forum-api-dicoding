@@ -5,7 +5,6 @@ const AddComment = require('../../../Domains/comments/entities/AddComment');
 const AddedComment = require('../../../Domains/comments/entities/AddedComment');
 const pool = require('../../database/postgres/pool');
 const CommentRepositoryPostgres = require('../CommentRepositoryPostgres');
-const ArrayComments = require('../../../Domains/comments/entities/ArrayComments');
 
 describe('CommentRepositoryPostgres', () => {
   beforeEach(async () => {
@@ -175,26 +174,23 @@ describe('CommentRepositoryPostgres', () => {
         'thread-123'
       );
 
-      comments[0].replies = [];
-      comments[1].replies = [];
-
-      const arrayComments = new ArrayComments(comments);
-
       // Assert
-      expect(arrayComments.comments).toHaveLength(2);
-
-      const comment1 = arrayComments.comments[0];
-      const comment2 = arrayComments.comments[1];
-
-      expect(comment1.id).toEqual('comment-123');
-      expect(comment1.content).toEqual('sebuah comment');
-      expect(comment1.date).toEqual('2020-01-12T16:36:10.653Z');
-      expect(comment1.username).toEqual('dicoding');
-
-      expect(comment2.id).toEqual('comment-456');
-      expect(comment2.content).toEqual('**komentar telah dihapus**');
-      expect(comment2.date).toEqual('2021-01-12T16:36:10.653Z');
-      expect(comment2.username).toEqual('dicoding');
+      expect(comments).toStrictEqual([
+        {
+          content: 'sebuah comment',
+          date: '2020-01-12T16:36:10.653Z',
+          id: 'comment-123',
+          is_delete: false,
+          username: 'dicoding',
+        },
+        {
+          content: 'sebuah comment',
+          date: '2021-01-12T16:36:10.653Z',
+          id: 'comment-456',
+          is_delete: true,
+          username: 'dicoding',
+        },
+      ]);
     });
   });
 });
