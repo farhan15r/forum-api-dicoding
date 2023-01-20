@@ -38,7 +38,7 @@ class UpdateLikesCommentUseCase {
       typeof owner !== 'string'
     ) {
       throw new Error(
-        'UPDATE_LIKES_COMMENT_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION'
+        'UPDATE_LIKES_COMMENT_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION'
       );
     }
   }

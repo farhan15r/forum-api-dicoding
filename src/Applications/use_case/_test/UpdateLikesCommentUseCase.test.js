@@ -111,4 +111,43 @@ describe('a UpdateLikesCommentUseCase entities', () => {
 
     expect(this.mockLikeRepository.addLike).not.toBeCalled();
   });
+
+  it('should throw error when payload not contain needed property', async () => {
+    // Arrange
+    const useCasePayload = {
+      commentId: 'comment-123',
+      threadId: 'thread-123',
+    };
+
+    const useCase = new UpdateLikesCommentUseCase({
+      commentRepository: this.mockCommentRepository,
+      threadRepository: this.mockThreadRepository,
+      likeRepository: this.mockLikeRepository,
+    });
+
+    // Action & Assert
+    await expect(useCase.execute(useCasePayload)).rejects.toThrowError(
+      'UPDATE_LIKES_COMMENT_USE_CASE.NOT_CONTAIN_NEEDED_PROPERTY'
+    );
+  });
+
+  it('should throw error when payload not meet data type specification', async () => {
+    // Arrange
+    const useCasePayload = {
+      commentId: 123,
+      threadId: 123,
+      owner: 123,
+    };
+
+    const useCase = new UpdateLikesCommentUseCase({
+      commentRepository: this.mockCommentRepository,
+      threadRepository: this.mockThreadRepository,
+      likeRepository: this.mockLikeRepository,
+    });
+
+    // Action & Assert
+    await expect(useCase.execute(useCasePayload)).rejects.toThrowError(
+      'UPDATE_LIKES_COMMENT_USE_CASE.NOT_MEET_DATA_TYPE_SPECIFICATION'
+    );
+  });
 });
