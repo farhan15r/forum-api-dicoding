@@ -26,6 +26,7 @@ describe('GetThreadUseCase', () => {
         content: 'Dicoding Indonesia',
         date: '2021-08-08T07:26:17.018Z',
         username: 'user-123',
+        likeCount: 0,
         replies: expectedArrayReplies,
       },
     ];
@@ -57,6 +58,7 @@ describe('GetThreadUseCase', () => {
             content: 'Dicoding Indonesia',
             date: '2021-08-08T07:26:17.018Z',
             username: 'user-123',
+            like_count: 0,
             is_delete: false,
           },
         ])

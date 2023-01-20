@@ -68,7 +68,7 @@ class CommentRepositoryPostgres extends CommentRepository {
   async getCommentsByThreadId(threadId) {
     const query = {
       text: `SELECT
-        comments.id, users.username, comments.date, comments.is_delete, comments.content
+        comments.id, users.username, comments.date, comments.is_delete, comments.content, comments.like_count
         FROM comments
         LEFT JOIN users ON comments.owner = users.id
         WHERE comments.thread_id = $1
@@ -79,6 +79,15 @@ class CommentRepositoryPostgres extends CommentRepository {
     const result = await this._pool.query(query);
 
     return result.rows;
+  }
+
+  async updateLikeCountComment(commentId, countLike) {
+    const query = {
+      text: 'UPDATE comments SET like_count = $1 WHERE id = $2',
+      values: [countLike, commentId],
+    };
+
+    await this._pool.query(query);
   }
 }
 

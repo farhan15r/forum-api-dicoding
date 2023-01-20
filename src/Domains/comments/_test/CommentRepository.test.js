@@ -21,5 +21,8 @@ describe('a CommentRepository entities', () => {
     await expect(
       commentRepository.getCommentsByThreadId({})
     ).rejects.toThrowError('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED');
+    await expect(
+      commentRepository.updateLikeCountComment({})
+    ).rejects.toThrowError('COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED');
   });
 });

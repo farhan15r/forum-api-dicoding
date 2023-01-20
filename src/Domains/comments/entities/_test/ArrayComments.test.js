@@ -58,6 +58,7 @@ describe('a ArrayComments entities', () => {
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
         is_delete: false,
+        like_count: 0,
         replies: [],
       },
     ];
@@ -77,6 +78,7 @@ describe('a ArrayComments entities', () => {
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
         is_delete: true,
+        like_count: 0,
         replies: [],
       },
       {
@@ -85,6 +87,7 @@ describe('a ArrayComments entities', () => {
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
         is_delete: false,
+        like_count: 0,
         replies: [],
       },
     ];
@@ -95,6 +98,7 @@ describe('a ArrayComments entities', () => {
         content: '**komentar telah dihapus**',
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
+        likeCount: 0,
         replies: [],
       },
       {
@@ -102,6 +106,7 @@ describe('a ArrayComments entities', () => {
         content: 'ini komentar',
         date: '2021-08-08T07:07:46.000Z',
         username: 'dicoding',
+        likeCount: 0,
         replies: [],
       },
     ];
