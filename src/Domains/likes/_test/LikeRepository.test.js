@@ -9,7 +9,7 @@ describe('a LikeRepository entities', () => {
     await expect(likeRepository.countLike({})).rejects.toThrowError(
       'LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED'
     );
-    await expect(likeRepository.countLike({})).rejects.toThrowError(
+    await expect(likeRepository.addLike({})).rejects.toThrowError(
       'LIKE_REPOSITORY.METHOD_NOT_IMPLEMENTED'
     );
     await expect(likeRepository.deleteLike({})).rejects.toThrowError(
