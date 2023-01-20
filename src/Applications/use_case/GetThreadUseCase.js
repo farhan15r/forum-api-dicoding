@@ -18,14 +18,6 @@ class GetThreadUseCase {
       threadId
     );
 
-    // await comments.map(async (comment) => {
-    //   const replies = await this._replyRepository.getRepliesByCommentId(
-    //     comment.id
-    //   );
-    //   const arrayReplies = new ArrayReplies(replies);
-    //   comment.replies = arrayReplies.replies;
-    // });
-
     await Promise.all(
       comments.map(async (comment) => {
         const replies = await this._replyRepository.getRepliesByCommentId(

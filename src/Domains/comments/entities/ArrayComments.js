@@ -2,7 +2,7 @@ class ArrayComments {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    this.comments = this._softDeleteContent(payload);
+    this.comments = this._reStructureContent(payload);
   }
 
   _verifyPayload(payload) {
@@ -16,6 +16,7 @@ class ArrayComments {
         !payload[0].username ||
         !payload[0].date ||
         !payload[0].content ||
+        payload[0].like_count === undefined ||
         !payload[0].replies ||
         payload[0].is_delete === undefined
       ) {
@@ -27,6 +28,7 @@ class ArrayComments {
         typeof payload[0].username !== 'string' ||
         typeof payload[0].date !== 'string' ||
         typeof payload[0].content !== 'string' ||
+        typeof payload[0].like_count !== 'number' ||
         Array.isArray(payload[0].replies) !== true ||
         typeof payload[0].is_delete !== 'boolean'
       ) {
@@ -35,12 +37,14 @@ class ArrayComments {
     }
   }
 
-  _softDeleteContent(payload) {
+  _reStructureContent(payload) {
     payload.map((comment) => {
+      comment.likeCount = comment.like_count;
       if (comment.is_delete) {
         comment.content = '**komentar telah dihapus**';
       }
       delete comment.is_delete;
+      delete comment.like_count;
     });
 
     return payload;

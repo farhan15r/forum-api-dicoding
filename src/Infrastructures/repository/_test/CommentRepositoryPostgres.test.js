@@ -181,6 +181,7 @@ describe('CommentRepositoryPostgres', () => {
           date: '2020-01-12T16:36:10.653Z',
           id: 'comment-123',
           is_delete: false,
+          like_count: 0,
           username: 'dicoding',
         },
         {
@@ -188,9 +189,29 @@ describe('CommentRepositoryPostgres', () => {
           date: '2021-01-12T16:36:10.653Z',
           id: 'comment-456',
           is_delete: true,
+          like_count: 0,
           username: 'dicoding',
         },
       ]);
+    });
+  });
+
+  describe('updateLikeCount function', () => {
+    it('should persist update like count', async () => {
+      // Arrange
+      await CommentsTableTestHelper.addComment({});
+
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action
+      await commentRepositoryPostgres.updateLikeCountComment('comment-123', 1);
+
+      // Assert
+      const comments = await CommentsTableTestHelper.findCommentsById(
+        'comment-123'
+      );
+
+      expect(comments[0].like_count).toEqual(1);
     });
   });
 });

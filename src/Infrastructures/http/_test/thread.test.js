@@ -333,6 +333,7 @@ describe('/threads endpoint', () => {
       expect(responseJson.data.thread).toBeDefined();
       expect(responseJson.data.thread.comments).toBeDefined();
       expect(responseJson.data.thread.comments.length).toEqual(1);
+      expect(responseJson.data.thread.comments[0].likeCount).toEqual(0);
     });
   });
 });
